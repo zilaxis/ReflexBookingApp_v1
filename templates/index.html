@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ระบบจองตั๋ว - ReflexBookingApp</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>ระบบจองตั๋ว</h1>
+
+        {% if message %}
+            <div class="success">{{ message }}</div>
+        {% elif error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/book" method="post">
+            <label>ชื่อ-นามสกุล:
+                <input type="text" name="name" required />
+            </label>
+
+            <label>บริการที่ต้องการ:</label>
+            <select name="service">
+                <option value="รถทัวร์">รถทัวร์</option>
+                <option value="รถไฟ">รถไฟ</option>
+                <option value="เรือข้ามฟาก">เรือข้ามฟาก</option>
+            </select>
+
+            <label>วันที่:
+                <input type="date" name="date" required />
+            </label>
+
+            <label>เวลา:</label>
+            <select name="time">
+                <option value="09:00">09:00</option>
+                <option value="12:00">12:00</option>
+                <option value="15:00">15:00</option>
+                <option value="18:00">18:00</option>
+            </select>
+
+            <label>จำนวนที่นั่ง:
+                <input type="number" name="quantity" min="1" max="5" required />
+            </label>
+
+            <button type="submit">จองตั๋ว</button>
+        </form>
+    </div>
+</body>
+</html>

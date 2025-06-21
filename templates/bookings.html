@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <title>รายการจองทั้งหมด - ReflexBookingApp</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <style>
+    .table-container {
+        background-color: rgba(255, 255, 255, 0.9); /* สีขาวโปร่งบาง */
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        max-width: 95%;
+        margin: 2rem auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f3f3f3;
+        text-align: left;
+    }
+
+    td.center {
+        text-align: center;
+    }
+
+    .actions a {
+        margin-right: 8px;
+        text-decoration: none;
+    }
+
+    .actions a:first-child {
+        color: orange;
+    }
+
+    .actions a:last-child {
+        color: red;
+    }
+    .back-link {
+        display: inline-block;
+        margin-top: 2rem;
+        padding: 8px 16px;
+        background-color: rgba(0, 0, 0, 0.6);  /* ดำบางๆ */
+        color: yellow;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-link:hover {
+        background-color: rgba(0, 0, 0, 0.8);  /* เพิ่มความชัดเมื่อ hover */
+        color: #fff700;
+    }
+</style>
+</head>
+<body>
+    <h1 style="text-align:center; color:#2c3e50;">รายการจองทั้งหมด</h1>
+{% if message %}
+<div style="background-color: #333; color: yellow; padding: 10px; border-radius: 10px; margin: 10px auto; width: fit-content; text-align: center;">
+  {{ message }}
+</div>
+{% endif %}
+
+<div style="text-align:center; margin: 1rem;">
+  <a href="/export/pdf" class="back-link" style="background-color: #c0392b;" title="ดาวน์โหลดข้อมูลเป็น PDF">
+    🧾 Export PDF
+  </a>
+</div>
+
+    {% if bookings %}
+    <div class="table-container">
+<form method="get" action="/bookings" style="text-align: right; margin-bottom: 1rem;">
+    <input type="text" name="search" placeholder="ค้นหา..." value="{{ request.query_params.get('search', '') }}"
+           style="padding: 6px 10px; border-radius: 8px; border: 1px solid #ccc;">
+    <button type="submit" style="padding: 6px 12px; background-color: #007BFF; color: white; border: none; border-radius: 8px;">
+        🔍 ค้นหา
+    </button>
+</form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ชื่อ</th>
+                    <th>บริการ</th>
+                    <th>วันที่</th>
+                    <th>เวลา</th>
+                    <th style="text-align:center;">จำนวนที่นั่ง</th>
+                    <th>การจัดการ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in bookings %}
+                <tr>
+                    <td>{{ b.name }}</td>
+                    <td>{{ b.service }}</td>
+                    <td>{{ b.date }}</td>
+                    <td>{{ b.time }}</td>
+                    <td class="center">{{ b.quantity }}</td>
+                    <td class="actions">
+                        <a href="/edit/{{ loop.index0 }}">🖊️ แก้ไข</a> |
+                        <a href="#" onclick="confirmDelete({{ loop.index0 }})">🗑 ลบ</a>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function confirmDelete(index) {
+    Swal.fire({
+      title: 'ลบข้อมูลนี้หรือไม่?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'ลบเลย',
+      cancelButtonText: 'ยกเลิก',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/delete/" + index;
+      }
+    });
+  }
+</script>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>ยังไม่มีการจอง</p>
+    {% endif %}
+
+<div style="margin: 2rem 0; text-align: left;">
+  <a href="/" class="back-link">← กลับไปจองใหม่</a>
+</div>
+</body>
+{% if message %}
+<div style="background-color: #333; color: yellow; padding: 10px; border-radius: 10px; margin: 10px auto; width: fit-content; text-align: center;">
+  {{ message }}
+</div>
+{% endif %}
+
+</html>

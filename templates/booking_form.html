@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบจองตั๋ว</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      background-image: url("/static/background.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Sarabun', sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center;">ระบบจองตั๋ว</h1>
+    <form method="post" action="/add_booking">
+  <label>ชื่อ-นามสกุล:</label>
+    <input type="text" name="name" required>
+
+
+  <label>บริการ:</label>
+  <select name="service" required>
+    <option value="รถทัวร์">รถทัวร์</option>
+    <option value="รถไฟ">รถไฟ</option>
+    <option value="เรือข้ามฟาก">เรือข้ามฟาก</option>
+  </select>
+
+  <label>วันที่:
+  <input type="date" name="date" required>
+    </label>
+
+  <label>เวลา:
+  <select name="time" required>
+    <option value="">-- เลือกเวลา --</option>
+    <option value="09:00">09:00</option>
+    <option value="12:00">12:00</option>
+    <option value="15:00">15:00</option>
+    <option value="18:00">18:00</option>
+  </select>
+</label>
+
+  <label>จำนวนที่นั่ง:</label>
+  <input type="number" name="quantity" min="1" required>
+
+  <button type="submit" onclick="return confirmBooking()">จองเลย</button>
+</form>
+
+<script>
+function confirmBooking() {
+  const form = document.getElementById('bookingForm');
+  const date = form.elements['date'].value;
+
+  if (!date) {
+    Swal.fire({
+      title: 'กรุณาเลือกวันที่!',
+      icon: 'warning',
+      confirmButtonText: 'ตกลง'
+    });
+    return false;
+  }
+
+  Swal.fire({
+    title: 'ยืนยันการจองหรือไม่?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'ยืนยัน',
+    cancelButtonText: 'ยกเลิก'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit();
+    }
+  });
+
+  return false; // เพื่อไม่ให้ form ส่งเองอัตโนมัติ
+}
+</script></form>
+
+  </div>
+</body>
+</html>

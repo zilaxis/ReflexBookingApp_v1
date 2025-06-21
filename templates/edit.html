@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>แก้ไขการจอง</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>แก้ไขการจอง</h1>
+
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" action="/edit/{{ index }}">
+    <label>ชื่อ-นามสกุล: <input type="text" name="name" value="{{ booking.name }}" required /></label><br />
+    <label>บริการที่ต้องการ:
+      <select name="service">
+        <option value="รถทัวร์" {% if booking.service == 'รถทัวร์' %}selected{% endif %}>รถทัวร์</option>
+        <option value="รถไฟ" {% if booking.service == 'รถไฟ' %}selected{% endif %}>รถไฟ</option>
+        <option value="เรือข้ามฟาก" {% if booking.service == 'เรือข้ามฟาก' %}selected{% endif %}>เรือข้ามฟาก</option>
+      </select>
+    </label><br />
+    <label>วันที่: <input type="date" name="date" value="{{ booking.date }}" required /></label><br />
+    <label>เวลา:
+      <select name="time">
+        <option value="09:00" {% if booking.time == '09:00' %}selected{% endif %}>09:00</option>
+        <option value="12:00" {% if booking.time == '12:00' %}selected{% endif %}>12:00</option>
+        <option value="15:00" {% if booking.time == '15:00' %}selected{% endif %}>15:00</option>
+        <option value="18:00" {% if booking.time == '18:00' %}selected{% endif %}>18:00</option>
+      </select>
+    </label><br />
+    <label>จำนวนที่นั่ง: <input type="number" name="quantity" min="1" max="5" value="{{ booking.quantity }}" required /></label><br />
+
+<div class="button-group">
+  <button type="submit" class="action-button">💾 บันทึกการเปลี่ยนแปลง</button>
+    <a href="/bookings" class="action-button">← ย้อนกลับ</a>
+</div>
+
+</form>
+
+  <br />
+  </body>
+</html>
